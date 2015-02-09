@@ -26,7 +26,7 @@ public class Instance {
     private final String status;
 
     public Instance(String url, String name, String id, String status) {
-        this.url = url.replaceFirst("/+$", "");
+        this.url = url;
 		this.name = name;
 		this.id = id;
         this.status = status;

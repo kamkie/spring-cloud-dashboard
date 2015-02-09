@@ -25,8 +25,8 @@ public class EurekaRepository implements ApplicationRepository {
     @Override
     public Collection<Application> findAll() {
         return PeerAwareInstanceRegistry.getInstance().getSortedApplications().stream()
-            .map(TO_APPLICATION)
-            .collect(Collectors.toList());
+                .map(TO_APPLICATION)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -36,19 +36,19 @@ public class EurekaRepository implements ApplicationRepository {
 
     @Override
     public String getApplicationCircuitBreakerStreamUrl(String name) {
-        if(findByName(name) == null) {
+        if (findByName(name) == null) {
             return null;
         }
-        return turbineUrl+"?cluster="+name;
+        return turbineUrl + "?cluster=" + name;
     }
 
     @Override
     public String getInstanceCircuitBreakerStreamUrl(String instanceId) {
         String url = getInstanceManagementUrl(instanceId);
-        if( url == null ){
+        if (url == null) {
             return null;
         }
-        return url+"/hystrix.stream";
+        return url + "/hystrix.stream";
     }
 
     @Override
@@ -60,12 +60,12 @@ public class EurekaRepository implements ApplicationRepository {
     public String getInstanceManagementUrl(String id) {
 
         InstanceInfo info = findInstanceInfo(id);
-        if(info == null) {
+        if (info == null) {
             return null;
         }
 
-        String url = info.getHomePageUrl();
-        if(info.getMetadata().containsKey("managementPath")) {
+        String url = info.getStatusPageUrl().substring(0, info.getStatusPageUrl().lastIndexOf("/"));
+        if (info.getMetadata().containsKey("managementPath")) {
             url += info.getMetadata().get("managementPath");
         }
 
@@ -91,14 +91,19 @@ public class EurekaRepository implements ApplicationRepository {
     private Function<com.netflix.discovery.shared.Application, Application> TO_APPLICATION = new Function<com.netflix.discovery.shared.Application, Application>() {
         @Override
         public Application apply(com.netflix.discovery.shared.Application app) {
-            if(app == null) { return null; }
+            if (app == null) {
+                return null;
+            }
             return new Application(app.getName(), app.getInstances().stream().map(TO_INSTANCE).sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
         }
     };
 
     private Function<InstanceInfo, Instance> TO_INSTANCE = instance -> {
-        if(instance == null) { return null; }
-        return new Instance(instance.getHomePageUrl(), instance.getId(), instance.getAppName()+"_"+instance.getId().replaceAll("\\.","_"), instance.getStatus().toString());
+        if (instance == null) {
+            return null;
+        }
+        String statusPageUrl = instance.getStatusPageUrl().substring(0, instance.getStatusPageUrl().lastIndexOf("/"));
+        return new Instance(statusPageUrl, instance.getId(), instance.getAppName() + "_" + instance.getId().replaceAll("\\.", "_"), instance.getStatus().toString());
     };
 
     private Function<Pair<Long, String>, InstanceHistory> TO_REGISTRY_HISTORY = history -> new InstanceHistory(history.second(), new Date(history.first()));
