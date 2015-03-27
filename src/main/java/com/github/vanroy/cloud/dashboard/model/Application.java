@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.vanroy.cloud.dashboard.model;
+package com.github.vanroy.cloud.dashboard.model;
 
 import java.util.List;
 
 /**
  * The domain model for all application at the spring cloud dashboard application.
+ * @author Julien Roy
  */
 public class Application {
 

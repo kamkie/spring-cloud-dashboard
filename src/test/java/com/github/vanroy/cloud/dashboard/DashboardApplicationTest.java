@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.vanroy.cloud.dashboard;
+package com.github.vanroy.cloud.dashboard;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import net.vanroy.cloud.dashboard.turbine.MockStreamServlet;
+import com.github.vanroy.cloud.dashboard.repository.RegistryRepository;
+import com.github.vanroy.cloud.dashboard.turbine.MockStreamServlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,11 +40,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.google.common.collect.ImmutableList;
 
-import net.vanroy.cloud.dashboard.config.EnableCloudDashboard;
-import net.vanroy.cloud.dashboard.model.Application;
-import net.vanroy.cloud.dashboard.model.Instance;
-import net.vanroy.cloud.dashboard.model.InstanceHistory;
-import net.vanroy.cloud.dashboard.repository.ApplicationRepository;
+import com.github.vanroy.cloud.dashboard.config.EnableCloudDashboard;
+import com.github.vanroy.cloud.dashboard.model.Application;
+import com.github.vanroy.cloud.dashboard.model.Instance;
+import com.github.vanroy.cloud.dashboard.model.InstanceHistory;
+import com.github.vanroy.cloud.dashboard.repository.ApplicationRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -145,22 +146,29 @@ public class DashboardApplicationTest {
                 public String getInstanceManagementUrl(String id) {
                     return "http://localhost:8761/";
                 }
+            };
+        }
+
+        @Bean
+        public RegistryRepository eurekaRegistryRepository() {
+            
+            return new RegistryRepository() {
 
                 @Override
                 public List<InstanceHistory> getRegisteredInstanceHistory() {
                     return ImmutableList.of(
-                        new InstanceHistory("INSTANCE 1", new Date()),
-                        new InstanceHistory("INSTANCE 2", new Date()),
-                        new InstanceHistory("INSTANCE 3", new Date())
+                            new InstanceHistory("INSTANCE 1", new Date()),
+                            new InstanceHistory("INSTANCE 2", new Date()),
+                            new InstanceHistory("INSTANCE 3", new Date())
                     );
                 }
 
                 @Override
                 public List<InstanceHistory> getCanceledInstanceHistory() {
                     return ImmutableList.of(
-                        new InstanceHistory("CANCELLED INSTANCE 1", new Date()),
-                        new InstanceHistory("CANCELLED INSTANCE 2", new Date()),
-                        new InstanceHistory("CANCELLED INSTANCE 3", new Date())
+                            new InstanceHistory("CANCELLED INSTANCE 1", new Date()),
+                            new InstanceHistory("CANCELLED INSTANCE 2", new Date()),
+                            new InstanceHistory("CANCELLED INSTANCE 3", new Date())
                     );
                 }
             };

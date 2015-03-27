@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.vanroy.cloud.dashboard.controller;
+package com.github.vanroy.cloud.dashboard.controller;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import net.vanroy.cloud.dashboard.model.Application;
-import net.vanroy.cloud.dashboard.model.Instance;
-import net.vanroy.cloud.dashboard.model.InstanceHistory;
-import net.vanroy.cloud.dashboard.repository.ApplicationRepository;
+import com.github.vanroy.cloud.dashboard.model.Application;
+import com.github.vanroy.cloud.dashboard.model.Instance;
+import com.github.vanroy.cloud.dashboard.repository.ApplicationRepository;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -36,11 +34,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * REST controller for retrieve applications information.
+ * @author Julien Roy
  */
 @RestController
 public class ApplicationController {
@@ -132,16 +129,4 @@ public class ApplicationController {
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
    	}
-
-    /**
-     * Return instance history registration/cancellation
-     * @return List of registered/cancelled instances
-     */
-    @RequestMapping(value = "/api/instances/history", method = RequestMethod.GET)
-    public Map<String, List<InstanceHistory>> instancesHistory() {
-        return ImmutableMap.of(
-            "lastRegistered", repository.getRegisteredInstanceHistory(),
-            "lastCancelled", repository.getCanceledInstanceHistory()
-        );
-    }
 }

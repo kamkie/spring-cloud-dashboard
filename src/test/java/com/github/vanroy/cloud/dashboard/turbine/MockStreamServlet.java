@@ -1,4 +1,4 @@
-package net.vanroy.cloud.dashboard.turbine;
+package com.github.vanroy.cloud.dashboard.turbine;
 
 import java.io.BufferedReader;
 import java.io.IOException;

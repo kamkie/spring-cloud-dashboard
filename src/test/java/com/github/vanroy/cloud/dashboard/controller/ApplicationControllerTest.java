@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.vanroy.cloud.dashboard.controller;
+package com.github.vanroy.cloud.dashboard.controller;
 
 public class ApplicationControllerTest {
 
