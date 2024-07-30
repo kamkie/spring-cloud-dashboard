@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
         <spring-cloud.version>1.0.0.RELEASE</spring-cloud.version>
-        <bootstrap.version>3.3.1</bootstrap.version>
+        <bootstrap.version>3.4.0</bootstrap.version>
         <jquery.version>2.1.1</jquery.version>
         <angularjs.version>1.2.27</angularjs.version>
         <angular-ui-router.version>0.2.13</angular-ui-router.version>
